@@ -18,6 +18,7 @@ const NumberBaseBall = () => {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState(getNumbers());
   const [tries, setTries] = useState([]);
+  const inputEl = useRef(null);
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -28,6 +29,8 @@ const NumberBaseBall = () => {
       });
       setAnswer(getNumbers());
       setTries([]);
+      setValue("");
+      inputEl.current.focus();
     } else {
       // ekqdl xmffuTdmaus
       const answerArray = value.split("").map((v) => parseInt(v));
@@ -39,7 +42,8 @@ const NumberBaseBall = () => {
         alert("게임을 다시 시작합니다!");
         setValue("");
         setAnswer(getNumbers());
-        setState([]);
+        setTries([]);
+        inputEl.current.focus();
       } else {
         for (let i = 0; i < 4; i += 1) {
           if (answerArray[i] === answer[i]) {
@@ -61,7 +65,6 @@ const NumberBaseBall = () => {
   };
 
   const onChangeInput = (e) => {
-    console.log(answer);
     setValue(e.target.value);
   };
 
@@ -69,7 +72,12 @@ const NumberBaseBall = () => {
     <>
       <h1>{result}</h1>
       <form onSubmit={onSubmitForm}>
-        <input maxLength={4} value={value} onChange={onChangeInput} />
+        <input
+          maxLength={4}
+          value={value}
+          onChange={onChangeInput}
+          ref={inputEl}
+        />
       </form>
       <div>시도: {tries.length}</div>
       <ul>
